@@ -9,7 +9,13 @@ import { FORMULARIO_PROYECTO }  from '../../types'
 
 const ProyectoState = props =>{
     const initalState = {
-        formulario : false
+        formulario : false,
+        proyectos : [
+            {id:1, nombre: 'Tienda de Droga'},
+            {id:2, nombre: 'Cuereria Shop'},
+            {id:3, nombre: 'Robar Diario'},
+            {id:4, nombre: 'Robar Diario'}
+        ]
     }
 
     // Dispatch para ejecutar las acciones
@@ -26,6 +32,7 @@ const ProyectoState = props =>{
         <proyectoContext.Provider
         value={{
             formulario: state.formulario,
+            proyectos: state.proyectos,
             mostrarFormulario
         }}
         >
