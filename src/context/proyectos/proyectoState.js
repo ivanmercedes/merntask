@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import proyectoContext from './proyectoContex';
 import ProyectoReducer from './proyectoReducer';
-import Proyecto from '../../components/proyectos/Proyecto';
 import { FORMULARIO_PROYECTO, OBTENER_PROYECTOS, AGREGAR_PROYECTO, VALIDAR_FORMULARIO, PROYECTO_ACTUAL, ELIMINAR_PROYECTO  }  from '../../types'
 
 

@@ -2,7 +2,14 @@ import React , { useReducer } from 'react';
 import tareaContext from './tareaContext';
 import TareaReducer from './tareaReducer';
 
-import { TAREAS_PROYECTO, AGREGAR_TAREA, VALIDAR_TAREA, ELIMINAR_TAREA } from '../../types';
+import { 
+     TAREAS_PROYECTO,
+     AGREGAR_TAREA, 
+     VALIDAR_TAREA,
+     ELIMINAR_TAREA,
+     ESTADO_TAREA,
+     TAREA_ACTUAL,
+     ACTUALIZAR_TAREA } from '../../types';
 
 const TareaState = props => {
     const initialState = {
@@ -19,7 +26,8 @@ const TareaState = props => {
             {id:10, proyectoId:3, nombre:'guele droga', estado : true}
         ],
         tareaproyecto: null,
-        errortarea: false
+        errortarea: false,
+        tereaseleccionada: null
 
     }
 
@@ -60,16 +68,45 @@ const TareaState = props => {
             payload: id
         })
     }
+     // Cambia el estado de cada tarea
+     const cambiarEstadoTarea = tarea =>{
+         dispatch({
+             type: ESTADO_TAREA,
+             payload: tarea
+         })
+     }
+     
+     // Extrae una tarea para la edicion
+     const guardarTareasActual = tarea =>{
+         dispatch({
+            type: TAREA_ACTUAL,
+            payload: tarea
+         })
+         
+     }
+
+     // Edita o modifica una tarea
+     const actualizarTarea = tarea => {
+         console.log(tarea);
+         dispatch({
+             type: ACTUALIZAR_TAREA,
+             payload: tarea
+         })
+     }
     return (
         <tareaContext.Provider
         value={{
             tareas: state.tareas,
             tareaproyecto: state.tareaproyecto,
             errortarea: state.errortarea,
+            tereaseleccionada: state.tereaseleccionada,
             obtenerTareas,
             agragarTarea,
             validarTarea,
-            eliminarTarea
+            eliminarTarea,
+            cambiarEstadoTarea,
+            guardarTareasActual,
+            actualizarTarea
         }}
         >
             {props.children}
