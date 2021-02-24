@@ -1,6 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useContext,useEffect } from 'react';
 import { Link } from 'react-router-dom';
-const NuevaCuenta = () => {
+import AlertaContext from '../../context/alertas/alertaContext';
+import AuthContext from '../../context/autenticacion/authContex';
+
+
+const NuevaCuenta = (props) => {
+    
+    // extraer los valores del context
+    const alertaContext = useContext(AlertaContext);
+    const { alerta, mostrarAlerta } = alertaContext;
+
+    const authContext = useContext(AuthContext);
+    const { mensaje, autenticado, registrarUsuario } = authContext;
+
+    // en caso de que el usuario  se haya auntenticado o registrado o sean un registro duplicado
+    useEffect(() => {
+        if(autenticado){
+             props.history.push('/proyectos');
+        }
+
+        if(mensaje){
+            mostrarAlerta(mensaje.msg, mensaje.categoria);
+        }
+        // eslint-disable-next-line
+    }, [mensaje,autenticado, props.history])
+    
     
     // State para iniciar sesion
     const [ usuario, guardarUsuario ] = useState({
@@ -25,13 +49,25 @@ const NuevaCuenta = () => {
         e.preventDefault();
 
         // validar que no haya campos vacios
+        if(nombre.trim() ==='' || email.trim() ==='' || password.trim() ==='' || confirmar.trim() ==='' ){
+            mostrarAlerta('Todos lo campos son obligatorios', 'alerta-error');
+            return;
+        }
 
         // Password minimo 6 caracteres
+        if(password.length < 6){
+            mostrarAlerta('El password debe ser de al menos 6 caracteres', 'alerta-error');
+            return;
+        }
 
         // Los 2 passwords sean iguales
-
+        if(password !== confirmar){
+            mostrarAlerta('Los password no son iguales', 'alerta-error');
+            return;
+        }
         // Pasarlo al action
-
+        registrarUsuario({ nombre, email, password});
+        
         
     }
     return (
@@ -42,6 +78,7 @@ const NuevaCuenta = () => {
                 <form
                  onSubmit={onSubmit}
                 >
+                    {alerta ?  ( <div className={`alerta ${alerta.categoria}`}>{ alerta.msg }</div> ) : null}
                     <div className="campo-form">
                         <label htmlFor="nombre">Nombre</label>
                         <input
